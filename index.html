@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+  background-color: #222;
+  color: #ddd;
+  font-family: monospace;
+}
+
+.container {
+  display: flex;
+}
+
+.left {
+  width: 60%;
+  padding: 20px;
+}
+
+.right {
+  width: 40%;
+  padding: 20px;
+}
+
+.flow-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.flow-item {
+  background-color: #333;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+.flow-item h2 {
+  margin: 0;
+}
+
+.flow-item p {
+  margin: 5px 0;
+}
+
+.flow-item .code {
+  background-color: #444;
+  padding: 5px;
+  border-radius: 3px;
+}
+
+.flow-item:hover {
+  background-color: #444;
+}
+
+.flow-item:hover .code {
+  background-color: #555;
+}
+
+.flow-item.selected {
+  background-color: #444;
+}
+
+.flow-item.selected .code {
+  background-color: #555;
+}
+
+.flow-line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 2px;
+  background-color: #555;
+}
+
+.flow-line.horizontal {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.flow-line.vertical {
+  transform: translate(-50%, -50%);
+}
+
+.flow-arrow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+}
+
+.flow-arrow.right {
+  border-bottom: 10px solid #555;
+  transform: translate(-50%, -50%) translateX(50%);
+}
+
+.flow-arrow.left {
+  border-bottom: 10px solid #555;
+  transform: translate(-50%, -50%) translateX(-50%);
+}
+
+.flow-arrow.down {
+  border-right: 10px solid #555;
+  transform: translate(-50%, -50%) translateY(50%);
+}
+
+.flow-arrow.up {
+  border-right: 10px solid #555;
+  transform: translate(-50%, -50%) translateY(-50%);
+}
+
+.right .section {
+  background-color: #333;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.right .section h3 {
+  margin: 0;
+}
+
+.right .section p {
+  margin: 5px 0;
+}
+
+.right .section .input {
+  width: 100%;
+  padding: 5px;
+  background-color: #444;
+  border-radius: 3px;
+  margin-top: 5px;
+}
+
+.right .section .checkbox {
+  margin-top: 5px;
+}
+
+.right .section .checkbox input {
+  margin-right: 5px;
+}
+
+.right .section .button {
+  width: 100%;
+  padding: 5px;
+  background-color: #444;
+  border-radius: 3px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.right .section .button:hover {
+  background-color: #555;
+}
+
+.flow-item:nth-child(1) .flow-line {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.flow-item:nth-child(1) .flow-arrow {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateX(-50%);
+}
+
+.flow-item:nth-child(2) .flow-line {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.flow-item:nth-child(2) .flow-arrow {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateX(50%);
+}
+
+.flow-item:nth-child(3) .flow-line {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.flow-item:nth-child(3) .flow-arrow {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateX(-50%);
+}
+
+.flow-item:nth-child(4) .flow-line {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.flow-item:nth-child(4) .flow-arrow {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateX(50%);
+}
+
+.flow-item:nth-child(5) .flow-line {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.flow-item:nth-child(5) .flow-arrow {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateX(-50%);
+}
+
+.flow-item:nth-child(6) .flow-line {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.flow-item:nth-child(6) .flow-arrow {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateX(50%);
+}
+
+.flow-item:nth-child(7) .flow-line {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.flow-item:nth-child(7) .flow-arrow {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateX(-50%);
+}
+
+.flow-item:nth-child(8) .flow-line {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.flow-item:nth-child(8) .flow-arrow {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateX(50%);
+}
+
+.flow-item:nth-child(9) .flow-line {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.flow-item:nth-child(9) .flow-arrow {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateX(-50%);
+}
+
+.flow-item:nth-child(10) .flow-line {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.flow-item:nth-child(10) .flow-arrow {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateX(50%);
+}
+
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="left">
+    <div class="flow-container">
+      <div class="flow-item" data-id="cart_router.py">
+        <h2>cart_router.py</h2>
+        <p>add_item_to_cart</p>
+        <p class="code">"DependentLibs": ["sqlalchemy"]</p>
+        <p class="code">"Params": ["user_id", "item", "db"]</p>
+        <p class="code">"ResponseObject": "JSONResponse"</p>
+        <div class="flow-line horizontal"></div>
+        <div class="flow-arrow left"></div>
+      </div>
+      <div class="flow-item" data-id="cart_service.py">
+        <h2>cart_service.py</h2>
+        <p>add_item_to_cart</p>
+        <p class="code">"DependentLibs" : ["sqlalchemy"]</p>
+        <p class="code">"Params": ["user id", "item", "db", "quantity"]</p>
+        <p class="code">"ResponseObject": "Cortitem"</p>
+        <div class="flow-line vertical"></div>
+        <div class="flow-arrow right"></div>
+      </div>
+      <div class="flow-item" data-id="cart_crud.py">
+        <h2>cart_crud.py</h2>
+        <p>update_inventory</p>
+        <p class="code">"DependentLibs": ["sqlalchemy"]</p>
+        <p class="code">"Params": ["productid", "quantity"]</p>
+        <p class="code">"ResponseObject": None</p>
+        <div class="flow-line horizontal"></div>
+        <div class="flow-arrow left"></div>
+      </div>
+      <div class="flow-item" data-id="product_client.py">
+        <h2>product_client.py</h2>
+        <p>add_freebie_if_applicable</p>
+        <p class="code">"DependentLibs": ["sqlalchemy"]</p>
+        <p class="code">"Params":["cat_id", "product_id", "db", "quantity"]</p>
+        <p class="code">"ResponseObject": "Cartitem"</p>
+        <div class="flow-line vertical"></div>
+        <div class="flow-arrow right"></div>
+      </div>
+      <div class="flow-item" data-id="cart_service.py">
+        <h2>cart_service.py</h2>
+        <p>add_freebie_if_applicable</p>
+        <p class="code">"DependentLibs" : ["sqlalchemy"]</p>
+        <p class="code">"Params": ["cart id", "product id", "db"]</p>
+        <p class="code">"ResponseObject":"null"</p>
+        <div class="flow-line horizontal"></div>
+        <div class="flow-arrow left"></div>
+      </div>
+      <div class="flow-item" data-id="cart_crud.py">
+        <h2>cart_crud.py</h2>
+        <p>get_freebie_mapping</p>
+        <p class="code">"DependentLibs": ["sqlalchemy"]</p>
+        <p class="code">"Params": ["product_id", "db"]</p>
+        <p class="code">"ResponseObject": "FreebieMapping"</p>
+        <div class="flow-line vertical"></div>
+        <div class="flow-arrow right"></div>
+      </div>
+      <div class="flow-item" data-id="product_client.py">
+        <h2>product_client.py</h2>
+        <p>check_inventory</p>
+        <p class="code">"DependentLibs": ["httpx"]</p>
+        <p class="code">"Params": ["product_id", "quantity"]</p>
+        <p class="code">"ResponseObject":"null"</p>
+        <div class="flow-line horizontal"></div>
+        <div class="flow-arrow left"></div>
+      </div>
+      <div class="flow-item" data-id="product_client.py">
+        <h2>product_client.py</h2>
+        <div class="flow-line vertical"></div>
+        <div class="flow-arrow right"></div>
+      </div>
+    </div>
+    <button>Add Methods</button>
+    <p>cart▷ cart_routes.py▷ POST /carts/{cart_id}</p>
+  </div>
+  <div class="right">
+    <div class="section">
+      <h3>cart_campaign</h3>
+      <p>Last 2 commits scanned</p>
+      <p>5 entry points identified</p>
+      <p>Selected flow</p>
+      <select>
+        <option value="POST/carts/{carts_id}">POST/carts/{carts_id}</option>
+      </select>
+      <h3>Dependencies</h3>
+      <p>Select the ones you want to mock</p>
+      <div class="checkbox">
+        <input type="checkbox" checked>
+        <label>httpx</label>
+      </div>
+      <div class="checkbox">
+        <input type="checkbox" checked>
+        <label>product_client</label>
+      </div>
+      <div class="checkbox">
+        <input type="checkbox">
+        <label>sqlalchemy.orm</label>
+      </div>
+      <div class="checkbox">
+        <input type="checkbox">
+        <label>cart_crud</label>
+      </div>
+      <div class="checkbox">
+        <input type="checkbox">
+        <label>cartModel</label>
+      </div>
+    </div>
+    <div class="section">
+      <h3>Databases</h3>
+      <p>Select if you want to mock databases</p>
+      <div class="checkbox">
+        <input type="checkbox">
+        <label>I want to mock databases</label>
+      </div>
+      <div class="checkbox">
+        <input type="checkbox" checked>
+        <label>I don't want to mock database</label>
+      </div>
+    </div>
+    <div class="section">
+      <h3>Database Configurations</h3>
+      <input type="text" class="input" placeholder="Database User">
+      <input type="text" class="input" placeholder="Database Password">
+      <input type="text" class="input" placeholder="Database Hostname">
+      <button class="button">Save</button>
+    </div>
+  </div>
+</div>
+<script>
+const flowItems = document.querySelectorAll(".flow-item");
+const flowLines = document.querySelectorAll(".flow-line");
+const flowArrows = document.querySelectorAll(".flow-arrow");
+
+flowItems.forEach(item => {
+  item.addEventListener("click", () => {
+    flowItems.forEach(i => i.classList.remove("selected"));
+    item.classList.add("selected");
+
+    flowLines.forEach(line => line.style.display = "none");
+    flowArrows.forEach(arrow => arrow.style.display = "none");
+
+    const selectedItemId = item.dataset.id;
+    const connectedItems = [];
+
+    flowItems.forEach(i => {
+      if (i.dataset.id !== selectedItemId) {
+        connectedItems.push(i);
+      }
+    });
+
+    connectedItems.forEach(i => {
+      if (i.dataset.id === "cart_service.py" && selectedItemId === "cart_router.py") {
+        i.querySelector(".flow-line").style.display = "block";
+        i.querySelector(".flow-arrow").style.display = "block";
+      } else if (i.dataset.id === "cart_crud.py" && selectedItemId === "cart_service.py") {
+        i.querySelector(".flow-line").style.display = "block";
+        i.querySelector(".flow-arrow").style.display = "block";
+      } else if (i.dataset.id === "product_client.py" && selectedItemId === "cart_crud.py") {
+        i.querySelector(".flow-line").style.display = "block";
+        i.querySelector(".flow-arrow").style.display = "block";
+      } else if (i.dataset.id === "cart_service.py" && selectedItemId === "product_client.py") {
+        i.querySelector(".flow-line").style.display = "block";
+        i.querySelector(".flow-arrow").style.display = "block";
+      } else if (i.dataset.id === "cart_crud.py" && selectedItemId === "cart_service.py") {
+        i.querySelector(".flow-line").style.display = "block";
+        i.querySelector(".flow-arrow").style.display = "block";
+      } else if (i.dataset.id === "product_client.py" && selectedItemId === "cart_crud.py") {
+        i.querySelector(".flow-line").style.display = "block";
+        i.querySelector(".flow-arrow").style.display = "block";
+      } else if (i.dataset.id === "product_client.py" && selectedItemId === "product_client.py") {
+        i.querySelector(".flow-line").style.display = "block";
+        i.querySelector(".flow-arrow").style.display = "block";
+      }
+    });
+  });
+});
+</script>
+</body>
+</html>
